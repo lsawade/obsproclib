@@ -13,9 +13,9 @@ def queue_multiprocess_stream(
     """Uses the multiprocessing module to multiprocess your python stream.
     Extremely simple:
     1. Split stream into chunks for each processor, where each chunk contains
-       full stations so it's possible to rotate.
+    full stations so it's possible to rotate.
     2. Sends the processes to the processing queue and let's them do their
-       thing.
+    thing.
 
     **Warning**
 

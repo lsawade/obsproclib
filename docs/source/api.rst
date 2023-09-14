@@ -4,12 +4,12 @@ API
 All functions are available in the top-level namespace. But are defined in
 submodules modules to keep the directory structure clean.
 
-.. autofunction:: obsplotlib.read_toml
+.. autofunction:: obsproclib.read_toml
 
-.. autofunction:: obsplotlib.queue_multiprocess_stream
+.. autofunction:: obsproclib.queue_multiprocess_stream
 
-.. autofunction:: obsplotlib.process_stream
+.. autofunction:: obsproclib.process_stream
 
-.. autofunction:: obsplotlib.split_stream_in
+.. autofunction:: obsproclib.split_stream_inv
 
-.. autofunction:: obsplotlib.stream_multiply
+.. autofunction:: obsproclib.stream_multiply

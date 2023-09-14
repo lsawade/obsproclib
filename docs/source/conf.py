@@ -68,7 +68,7 @@ html_context = {
     "default_mode": "auto",
     # "github_url": "https://github.com", # or your GitHub Enterprise site
     "github_user": "lsawade",
-    "github_repo": "obsplotlib",
+    "github_repo": "obsproclib",
     "github_version": "main",
     "doc_path": "docs/source",
 }
