@@ -1,5 +1,3 @@
-from sphinx_gallery.scrapers import matplotlib_scraper
-from sphinx_gallery.sorting import FileNameSortKey
 # Get version
 from importlib.metadata import version
 release = version('obsproclib')
