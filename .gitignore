@@ -1,0 +1,14 @@
+*.egg-info
+.DS_Store
+__pycache__
+src/obsplotlib/_version.py
+build
+docs/source/examples/
+pypatoken
+pypitoken
+testpypitoken
+obsplotlib-testpypitoken
+obsplotlib-pypitoken
+examples/logo.svg
+examples/favicon.ico
+src/obsproclib/_version.py

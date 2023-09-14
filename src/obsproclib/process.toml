@@ -1,0 +1,11 @@
+water_level = 100.0
+filter_flag = true
+pre_filt = [0.0030, 0.0040, 0.0111, 0.0139]
+relative_starttime = 60.0
+relative_endtime = 3000.0
+resample_flag = true
+sampling_rate = 1.0
+taper_type = "cosine"
+taper_percentage = 0.05
+rotate_flag = true
+sanity_check = true
