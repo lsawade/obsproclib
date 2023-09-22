@@ -3,12 +3,6 @@
 import obspy
 from .utils import split_stream_inv
 from .process import process_stream
-try:
-    from mpi4py import MPI
-except ImportError as e:
-    print(e)
-    raise ImportError("MPI4PY not installed. Please install it to use MPI.")
-
 
 def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None,
                        verbose: bool = False):
@@ -29,6 +23,12 @@ def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None,
         Processed stream.
 
     """
+
+    try:
+        from mpi4py import MPI
+    except ImportError as e:
+        print(e)
+        raise ImportError("MPI4PY not installed. Please install it to use MPI.")
 
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
