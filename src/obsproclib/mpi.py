@@ -10,7 +10,8 @@ except ImportError as e:
     raise ImportError("MPI4PY not installed. Please install it to use MPI.")
 
 
-def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None):
+def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None,
+                       verbose: bool = False):
     """MPI wrapper for processing a stream.
 
     Parameters
@@ -19,6 +20,8 @@ def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None):
         Stream to be processed.
     process_dict : dict
         Processing dictionary.
+    verbose : bool
+        verbosity flag
 
     Returns
     -------
@@ -30,6 +33,9 @@ def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
+
+    if verbose and rank == 0:
+        print("-> Splitting stream.")
 
     if rank == 0:
         # Check whether stream is None
@@ -48,29 +54,47 @@ def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None):
         streamlist = None
         processdict = None
 
+
+    if verbose and rank == 0:
+        print("-> Scattering the streams")
+
     # Scatter stream chunks
     streamlist = comm.scatter(streamlist, root=0)
+
+    if verbose and rank == 0:
+        print("-> Broadcasting the process dictionary")
 
     # Broadcast process dictionary
     processdict = comm.bcast(processdict, root=0)
 
-    print(
-        f"Stream {len(streamlist)} -- "
-        f"Inv: {len(processdict['inventory'].get_contents()['channels'])} -- "
-        f"Rank: {rank}/{size}", flush=True)
+    if verbose:
+        print(
+            f"-> R/S: {rank}/{size} -- "
+            f"St: {len(streamlist)} -- "
+            f"Inv: {len(processdict['inventory'].get_contents()['channels'])}",
+            flush=True)
 
     # Process
     result = process_stream(streamlist, **processdict)
 
+    if verbose:
+        print(f"-> Rank: {rank}/{size} -- Done.", flush=True)
+
     # Make Gatherable result list
     results = []
     results.append(result)
-    print(f"Rank: {rank}/{size} -- Done.", flush=True)
+
+    if verbose and rank == 0:
+            print("-> Gathering results")
 
     results = comm.gather(results, root=0)
 
     # Sort
     if rank == 0:
+
+        if verbose:
+            print("-> Summing stream")
+
         # Flatten list of lists.
         resultst = obspy.Stream()
 
@@ -82,4 +106,5 @@ def mpi_process_stream(st: obspy.Stream | None, process_dict: dict | None):
         return processed_stream
 
     else:
+
         return None
